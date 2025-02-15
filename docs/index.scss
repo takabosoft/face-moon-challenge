@@ -6,7 +6,11 @@ html {
     padding: 0;
     overflow: hidden;
     user-select: none;
-    touch-action: none;
+    touch-action: manipulation;
+}
+
+* {
+    touch-action: manipulation;
 }
 
 body {
@@ -17,17 +21,29 @@ body {
     color: white;
 }
 
-main {
+.scene {
     position: absolute;
     inset: 0;
-    background: pink;
+}
+
+.scene-ctrl {
+    //background: red;
+    position: absolute;
+    inset: 0;
+
+    > .screen {
+        position: absolute;
+        background: rgba(0, 0, 255, 0.3);
+        transform-origin: 0 0;
+    }
 }
 
 .video {
-    position: absolute;
+    //position: absolute;
     left: 0;
     top: 0;
     width: 200px;
     height: 200px;
     background: yellow;
+    transform: scaleX(-1);
 }
