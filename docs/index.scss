@@ -5,6 +5,8 @@ html {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    user-select: none;
+    touch-action: none;
 }
 
 body {
@@ -13,4 +15,19 @@ body {
     font-weight: 400;
     background: black;
     color: white;
+}
+
+main {
+    position: absolute;
+    inset: 0;
+    background: pink;
+}
+
+.video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 200px;
+    background: yellow;
 }
