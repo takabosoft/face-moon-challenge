@@ -4,6 +4,7 @@ import { ImagePreloader } from "./utils/imagePreloader";
 export const spriteInfos = {
     stage1Terrain: new Rect(2, 2, 96, 156),
     spaceship: new Rect(101, 2, 17, 16),
+    explosion: new Rect(121, 2, 16, 14),
 } as const;
 
 
@@ -24,8 +25,28 @@ class SpriteSheet {
         return this.ctx.getImageData(srcRect.x, srcRect.y, srcRect.width, srcRect.height);
     }
 
-    drawSprite(destCtx: CanvasRenderingContext2D, xDest: number, yDest: number, srcRect: Rect) {
-        destCtx.drawImage(this.canvas, srcRect.x, srcRect.y, srcRect.width, srcRect.height, xDest, yDest, srcRect.width, srcRect.height);
+    drawSprite(destCtx: CanvasRenderingContext2D, xDest: number, yDest: number, srcRect: Rect, alpha = 1, rotateRad = 0, scale = 1) {
+        if (alpha != 1) {
+            destCtx.globalAlpha = alpha;
+        }
+
+        if (rotateRad != 0 || scale != 1) {
+            const xCenter = xDest + srcRect.width / 2;
+            const yCenter = yDest + srcRect.height / 2;
+            const oldTransform = destCtx.getTransform();
+            destCtx.translate(+xCenter, +yCenter);
+            destCtx.rotate(rotateRad);
+            destCtx.scale(scale, scale);
+            destCtx.translate(-xCenter, -yCenter);
+            destCtx.drawImage(this.canvas, srcRect.x, srcRect.y, srcRect.width, srcRect.height, xDest, yDest, srcRect.width, srcRect.height);
+            destCtx.setTransform(oldTransform);
+        } else {
+            destCtx.drawImage(this.canvas, srcRect.x, srcRect.y, srcRect.width, srcRect.height, xDest, yDest, srcRect.width, srcRect.height);
+        }
+        
+        if (alpha != 1) {
+            destCtx.globalAlpha = 1;
+        }
     }
 }
 
