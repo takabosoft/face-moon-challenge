@@ -1,5 +1,6 @@
 import { Rect } from "../../geometries/rect";
 import { Vec2 } from "../../geometries/vec2";
+import { RgbRange } from "../../utils/rgbRange";
 
 const limitParticles = 500;
 
@@ -52,30 +53,6 @@ export class ParticleManager {
         }
 
         ctx.globalCompositeOperation = old;
-    }
-}
-
-export class Rgb {
-    constructor(
-        readonly r: number,
-        readonly g: number,
-        readonly b: number,
-    ) {
-    }
-}
-
-export class RgbRange {
-    constructor(
-        readonly col1: Rgb,
-        readonly col2: Rgb,
-    ) {
-
-    }
-
-    rnd(): string {
-        const a = Math.random();
-        const bld = (v1: number, v2: number) => Math.floor((v1 * (1 - a) + v2 * a)).toString(16).padStart(2, "0");
-        return `#${bld(this.col1.r, this.col2.r)}${bld(this.col1.g, this.col2.g)}${bld(this.col1.b, this.col2.b)}`;
     }
 }
 
