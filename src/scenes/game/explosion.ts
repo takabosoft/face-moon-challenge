@@ -4,7 +4,7 @@ import { rndRange } from "../../utils/random";
 
 /** 爆裂魔法 */
 export class Explosion {
-    private counter = 0;
+    private _counter = 0;
     private readonly particles: ExpParticle[] = [];
 
     constructor(target: Vec2) {
@@ -22,15 +22,17 @@ export class Explosion {
         }
     }
 
+    get counter() { return this._counter; }
+
     onSimulation() {
-        this.counter++;
+        this._counter++;
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
         const old = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = "lighter";
 
-        const counter = this.counter;
+        const counter = this._counter;
         for (const p of this.particles) {
             if (counter >= p.startCounter && counter <= p.endCounter) {
                 p.draw(ctx, counter);

@@ -3,6 +3,10 @@ import { Component } from "../components/component";
 import { sceneController } from "../scenes/sceneController";
 import { FaceState, faceStateChecker } from "./faceStateChecker";
 
+export const enum FaceStateTrackerVideoStyle {
+    Dark = "dark",
+}
+
 export class FaceStateTracker extends Component {
     private readonly videoEl = $(`<video class="video" autoplay playsinline>`);
     private _timeout = new TimeoutTimer();
@@ -11,6 +15,7 @@ export class FaceStateTracker extends Component {
     constructor() {
         super();
         this.element = this.videoEl;
+        this.videoEl.addClass(FaceStateTrackerVideoStyle.Dark);
     }
 
     private get video() { return (this.videoEl[0] as HTMLVideoElement); }
