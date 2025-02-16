@@ -6,6 +6,7 @@ import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
 import { EnergyBar } from "./energyBar";
 import { GameCanvas } from "./gameCanvas";
+import { ParticleManager } from "./particleManager";
 import { Spaceship } from "./spaceship";
 import { Terrain } from "./terrain";
 
@@ -24,6 +25,7 @@ export class GameScene extends Scene {
     private readonly fixedSimAnimator = new FixedSimulationAnimator(60);
     private readonly terrain: Terrain;
     private readonly spaceship: Spaceship;
+    private readonly particleMan = new ParticleManager();
 
     constructor() {
         super("game-scene");
@@ -50,7 +52,8 @@ export class GameScene extends Scene {
 
     /** シミュレーションとしてゲームの時間を進めます（固定フレーム）。 */
     private onSimulation(): void {
-        this.spaceship.onSimulation(this.terrain);
+        this.particleMan.onSimulation();
+        this.spaceship.onSimulation(this.terrain, this.particleMan);
     }
 
     /** レンダリング（可変フレーム） */
@@ -58,6 +61,7 @@ export class GameScene extends Scene {
         this.gameCanvas.clear();
 
         this.terrain.draw(this.gameCanvas.ctx);
+        this.particleMan.draw(this.gameCanvas.ctx);
         this.spaceship.draw(this.gameCanvas.ctx);
 
         this.debugText.text(`FPS: ${this.fixedSimAnimator.fps}, Mouth: ${sceneController.faceStateTracker.lastFaceState?.isMouthOpen}, Dir: ${sceneController.faceStateTracker.lastFaceState?.yaw.toFixed(2)}`);
