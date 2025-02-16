@@ -22,8 +22,6 @@ class SceneController extends Component {
     readonly faceStateTracker = new FaceStateTracker();
     private readonly screen1 = new VirtualScreen(new Vec2(375, 630));
     private screen2?: VirtualScreen;
-    private curScene?: Scene;
-    private fadeAnimator = new DynamicFrameTweenAnimator();
 
     constructor() {
         super();
@@ -46,31 +44,17 @@ class SceneController extends Component {
     }
 
     /** シーンを変更します。 */
-    async changeScene(newScene: Scene, transition = true): Promise<void> {
-        if (this.fadeAnimator.isStarted) { return; }
+    async changeScene(newScene: Scene): Promise<void> {
         //console.log("changeScene:", newScene);
-
-        // フェードアウト
-        if (transition && this.curScene != null) {
-            const fadeEl = $(`<div class="fade">`);
-            this.element.css("pointer-events", "none");
-            this.element.append(fadeEl);
-            await this.fadeAnimator.start(0.5, d => fadeEl.css("opacity", lerpNumber(0, 1, easeInOutQuintic(d))));
-            fadeEl.remove();
-            this.element.css("pointer-events", "");
-        }
 
         this.closeOverlayMenu();
         this.screen1.element.empty().append(newScene.element);
-        this.curScene = newScene;
         newScene.onStartScene();
-
-        // MEMO: フェードイン中にトランジションが追加で呼ばれるとおかしくなるのでフェードはアウトだけにします。
     }
 
     /** エラーページへ遷移します（復帰不可能） */
     error(msg: string) {
-        this.changeScene(new ErrorScene(msg), false);
+        this.changeScene(new ErrorScene(msg));
     }
 
     showOverlayMenu(element: JQuery): void {

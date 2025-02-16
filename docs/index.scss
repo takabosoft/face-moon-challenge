@@ -44,15 +44,6 @@ body {
         inset: 0;
         background: rgba(0, 0, 0, 0.5);
     }
-
-    // フェード用
-    > .fade {
-        position: absolute;
-        inset: 0;
-        background: black;
-        will-change: opacity;
-        z-index: 1;
-    }
 }
 
 .video {
