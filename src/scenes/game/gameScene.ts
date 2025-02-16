@@ -12,6 +12,16 @@ import { ParticleManager } from "./particleManager";
 import { Spaceship } from "./spaceship";
 import { Terrain } from "./terrain";
 
+const enum GameSceneState {
+    Ready_3 = 0,
+    Ready_2,
+    Ready_1,
+    Ready_GO,
+    Play,
+    GameOver,
+    Clear,
+}
+
 /**
  * ## View階層
  * - Scene
@@ -20,10 +30,11 @@ import { Terrain } from "./terrain";
  *   - Energy Container
  *     - label
  *     - bar
- * 　- Overlay Menu
+ * 　- Ready Text
  */
 export class GameScene extends Scene {
     //private readonly debugText = $(`<div class="debug-text">`);
+    private readonly readyText = $(`<div class="ready-text">`).text("3");
     private readonly gameCanvas = new GameCanvas();
     private readonly energyBar = new EnergyBar();
     private readonly fixedSimAnimator = new FixedSimulationAnimator(60);
@@ -31,6 +42,8 @@ export class GameScene extends Scene {
     private readonly landingZone: LandingZone;
     private readonly spaceship: Spaceship;
     private readonly particleMan = new ParticleManager();
+    private state = GameSceneState.Ready_3;
+    private readyCount = 0;
     
     constructor() {
         super("game-scene");
@@ -42,6 +55,7 @@ export class GameScene extends Scene {
                 $(`<div class="energy-label">`).text("ENERGY:"),
                 this.energyBar.element,
             ),
+            this.readyText,
         );
 
         // ステージデータ準備
@@ -51,11 +65,11 @@ export class GameScene extends Scene {
     }
 
     override async onStartScene() {
-        //await sceneController.faceStateTracker.startTrack();
+        await sceneController.faceStateTracker.startTrack();
         this.gameCanvas.setupTransform(this.terrain.spriteRect.size);
         this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
 
-        sceneController.showOverlayMenu(new GameOverMenu().element);
+        //sceneController.showOverlayMenu(new GameOverMenu().element);
     }
 
     /** シミュレーションとしてゲームの時間を進めます（固定フレーム）。 */
@@ -63,6 +77,30 @@ export class GameScene extends Scene {
         this.particleMan.onSimulation();
         this.landingZone.onSimulation();
         this.spaceship.onSimulation(this.terrain, this.particleMan, this.landingZone);
+
+        // カウントダウン的な
+        if (this.state < GameSceneState.Play) {
+            this.readyCount++;
+            if (this.readyCount > 25) {
+                this.readyCount = 0;
+                this.state++;
+                switch (this.state) {
+                    case GameSceneState.Ready_2:
+                        this.readyText.text("2");
+                        break;
+                    case GameSceneState.Ready_1:
+                        this.readyText.text("1");
+                        break;
+                    case GameSceneState.Ready_GO:
+                        this.readyText.text("GO!");
+                        break;
+                    case GameSceneState.Play:
+                        this.readyText.remove();
+                        this.spaceship.play();
+                        break;
+                }
+            }
+        }
     }
 
     /** レンダリング（可変フレーム） */

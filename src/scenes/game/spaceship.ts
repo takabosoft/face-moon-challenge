@@ -37,7 +37,7 @@ const rightGusParticleStyle: ParticleStyle = {
     dir: new Vec2(+1, 0),
 };
 
-const yawThreshold = 6.5;
+const yawThreshold = 6.0;
 const landingHitTestRect = new Rect(6, 17, 7, 1);
 const landingOKThreshold = 0.7; // 甘めの判定
 
@@ -58,7 +58,7 @@ export class Spaceship {
     private readonly inertia = new MutableVec2(0, 0);
     private remainEnergy: number;
     private explosion?: Explosion;
-    private state = SpaceshipState.Play;
+    private state = SpaceshipState.Ready;
 
     constructor(private topLeft: MutableVec2, private readonly maxEnergy: number) {
         this.imageCollider = new ImageCollider(spriteSheet.getImageData(spriteInfos.spaceship));
@@ -75,6 +75,12 @@ export class Spaceship {
     private get isRightGusOn() {  
         const yaw = sceneController.faceStateTracker.lastFaceState?.yaw;
         return yaw != null && yaw > +yawThreshold;
+    }
+
+    play() {
+        if (this.state == SpaceshipState.Ready) {
+            this.state = SpaceshipState.Play;
+        }
     }
 
     onSimulation(terrain: Terrain, particleMan: ParticleManager, landingZone: LandingZone): void {
