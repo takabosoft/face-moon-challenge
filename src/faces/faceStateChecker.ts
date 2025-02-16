@@ -4,7 +4,7 @@ import type * as faceApiTypes from "face-api.js";
 export interface FaceState {
     /** 口の開閉 */
     readonly isMouthOpen: boolean;
-    /** 顔のY軸回転 */
+    /** 顔のY軸回転（0が真正面、プラスが左） */
     readonly yaw: number;
 }
 
