@@ -74,11 +74,29 @@ body {
     flex-direction: column;
     align-items: stretch;
     
-    > .stage-container {
-        flex: 1 1 auto;
+    > .game-canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    > .debug-text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        word-break: break-word;
+        font-size: 12px;
     }
 
     > .energy-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 18px;
         display: flex;
         align-items: center;
 
@@ -93,8 +111,8 @@ body {
             border: 1px solid white;
             border-radius: 2px;
             box-sizing: border-box;
-            height: 18px;
             position: relative;
+            align-self: stretch;
 
             > .rect {
                 position: absolute;

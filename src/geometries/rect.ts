@@ -15,6 +15,16 @@ export class Rect {
         return new Rect(this.x * s, this.y * s, this.width * s, this.height * s);
     }
 
+    deflate(params: { left?: number, top?: number, right?: number, bottom?: number, all?: number }): Rect {
+        const def = params.all ?? 0;
+        return Rect.fromLeftTopRightBottom(
+            this.left + (params.left ?? def),
+            this.top + (params.top ?? def),
+            this.right - (params.right ?? def),
+            this.bottom - (params.bottom ?? def),
+        )
+    }
+
     private objectPosition(objectSize: Vec2): Rect {
         return new Rect((this.width - objectSize.x) / 2, (this.top + this.bottom - objectSize.y) / 2, objectSize.x, objectSize.y);
     }
@@ -24,6 +34,14 @@ export class Rect {
         const scale = Math.min(this.width / objectSize.x, this.height / objectSize.y);
         const scaledSize = objectSize.scale(scale);
         return this.objectPosition(scaledSize);
+    }
+
+    static fromSize(size: Vec2): Rect {
+        return new Rect(0, 0, size.x, size.y);
+    }
+
+    static fromLeftTopRightBottom(left: number, top: number, right: number, bottom: number) {
+        return new Rect(left, top, right - left, bottom - top);
     }
 
     static fromOuterBounds(e: JQuery): Rect {

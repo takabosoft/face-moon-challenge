@@ -1,6 +1,6 @@
 import { TimeoutTimer } from "../animation/timeoutTimer";
 import { Component } from "../components/component";
-import { SceneController } from "../scenes/sceneController";
+import { sceneController } from "../scenes/sceneController";
 import { FaceState, faceStateChecker } from "./faceStateChecker";
 
 export class FaceStateTracker extends Component {
@@ -8,7 +8,7 @@ export class FaceStateTracker extends Component {
     private _timeout = new TimeoutTimer();
     private _lastFaceState?: FaceState;
 
-    constructor(private readonly sceneController: SceneController) {
+    constructor() {
         super();
         this.element = this.videoEl;
     }
@@ -29,7 +29,7 @@ export class FaceStateTracker extends Component {
             await this.startVideoStream();
             /*no await*/ this.startTrackImpl();
         } catch (e) {
-            this.sceneController.error(`カメラの初期化に失敗しました。\n${e}`);
+            sceneController.error(`カメラの初期化に失敗しました。\n${e}`);
         }
     }
 
