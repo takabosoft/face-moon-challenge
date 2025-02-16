@@ -1,9 +1,9 @@
 import { Rect } from "./geometries/rect";
-import { ImagePreloader } from "./imagePreloader";
+import { ImagePreloader } from "./utils/imagePreloader";
 
 export const spriteInfos = {
-    stage1: new Rect(2, 2, 96, 156),
-    ship: new Rect(101, 2, 17, 16),
+    stage1Terrain: new Rect(2, 2, 96, 156),
+    spaceship: new Rect(101, 2, 17, 16),
 } as const;
 
 
@@ -18,6 +18,10 @@ class SpriteSheet {
         this.canvas.height = img.img[0].naturalHeight;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(img.img[0], 0, 0);
+    }
+
+    getImageData(srcRect: Rect): ImageData {
+        return this.ctx.getImageData(srcRect.x, srcRect.y, srcRect.width, srcRect.height);
     }
 
     drawSprite(destCtx: CanvasRenderingContext2D, xDest: number, yDest: number, srcRect: Rect) {
