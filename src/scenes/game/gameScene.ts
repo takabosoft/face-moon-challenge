@@ -7,6 +7,7 @@ import { sceneController } from "../sceneController";
 import { EnergyBar } from "./energyBar";
 import { GameCanvas } from "./gameCanvas";
 import { LandingZone } from "./landingZone";
+import { GameOverMenu } from "./menus/gameOverMenu";
 import { ParticleManager } from "./particleManager";
 import { Spaceship } from "./spaceship";
 import { Terrain } from "./terrain";
@@ -16,12 +17,13 @@ import { Terrain } from "./terrain";
  * - Scene
  *   - GameCanvas
  *   - Debug Text
- *   - energy container
+ *   - Energy Container
  *     - label
  *     - bar
+ * 　- Overlay Menu
  */
 export class GameScene extends Scene {
-    private readonly debugText = $(`<div class="debug-text">`);
+    //private readonly debugText = $(`<div class="debug-text">`);
     private readonly gameCanvas = new GameCanvas();
     private readonly energyBar = new EnergyBar();
     private readonly fixedSimAnimator = new FixedSimulationAnimator(60);
@@ -35,7 +37,7 @@ export class GameScene extends Scene {
 
         this.element.append(
             this.gameCanvas.element,
-            this.debugText,
+            //this.debugText,
             $(`<div class="energy-container">`).append(
                 $(`<div class="energy-label">`).text("ENERGY:"),
                 this.energyBar.element,
@@ -49,9 +51,11 @@ export class GameScene extends Scene {
     }
 
     override async onStartScene() {
-        await sceneController.faceStateTracker.startTrack();
+        //await sceneController.faceStateTracker.startTrack();
         this.gameCanvas.setupTransform(this.terrain.spriteRect.size);
-        this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec))
+        this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
+
+        sceneController.showOverlayMenu(new GameOverMenu().element);
     }
 
     /** シミュレーションとしてゲームの時間を進めます（固定フレーム）。 */
@@ -69,7 +73,7 @@ export class GameScene extends Scene {
         this.terrain.draw(this.gameCanvas.ctx);
         this.spaceship.draw(this.gameCanvas.ctx);
         this.energyBar.ratio = this.spaceship.energyRatio;
-        this.debugText.text(`FPS: ${this.fixedSimAnimator.fps}, Mouth: ${sceneController.faceStateTracker.lastFaceState?.isMouthOpen}, Dir: ${sceneController.faceStateTracker.lastFaceState?.yaw.toFixed(2)}`);
+        //this.debugText.text(`FPS: ${this.fixedSimAnimator.fps}, Mouth: ${sceneController.faceStateTracker.lastFaceState?.isMouthOpen}, Dir: ${sceneController.faceStateTracker.lastFaceState?.yaw.toFixed(2)}`);
     }
 }
 

@@ -44,6 +44,7 @@ const landingOKThreshold = 0.7; // 甘めの判定
 const enum SpaceshipState {
     /** 噴射とかはできるけどエネルギーは減らない＆移動しない */
     Ready = 0,
+    /** プレイ中 */
     Play,
     /** 着陸成功 */
     Landing,
@@ -140,7 +141,12 @@ export class Spaceship {
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
-        spriteSheet.drawSprite(ctx, this.topLeft.x, this.topLeft.y, spriteInfos.spaceship);
+        let alpha = 1;
+        if (this.explosion != null) {
+            // 爆発時はフェードアウトさせます。
+            alpha = 1 - Math.min(this.explosion.counter / 50, 1);
+        }
+        spriteSheet.drawSprite(ctx, this.topLeft.x, this.topLeft.y, spriteInfos.spaceship, alpha);
         this.explosion?.draw(ctx);
     }
 }
