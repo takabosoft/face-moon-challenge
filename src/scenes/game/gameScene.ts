@@ -1,7 +1,7 @@
 import { FixedSimulationAnimator } from "../../animation/fixedSimulationAnimator";
 import { MutableVec2 } from "../../geometries/mutableVec2";
 import { Rect } from "../../geometries/rect";
-import { spriteInfos, spriteSheet } from "../../spriteSheet";
+import { spriteInfos } from "../../spriteSheet";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
 import { EnergyBar } from "./energyBar";
@@ -58,13 +58,12 @@ export class GameScene extends Scene {
     private onSimulation(): void {
         this.particleMan.onSimulation();
         this.landingZone.onSimulation();
-        this.spaceship.onSimulation(this.terrain, this.particleMan);
+        this.spaceship.onSimulation(this.terrain, this.particleMan, this.landingZone);
     }
 
     /** レンダリング（可変フレーム） */
     private onRender(deltaSec: number): void {
         this.gameCanvas.clear();
-
         this.particleMan.draw(this.gameCanvas.ctx);
         this.landingZone.draw(this.gameCanvas.ctx);
         this.terrain.draw(this.gameCanvas.ctx);

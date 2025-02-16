@@ -1,13 +1,9 @@
 import { Rect } from "../../geometries/rect";
 import { Vec2 } from "../../geometries/vec2";
+import { rndRange } from "../../utils/random";
 import { RgbRange } from "../../utils/rgbRange";
 
 const limitParticles = 500;
-
-function rndRange(v1: number, v2: number): number {
-    const a = Math.random();
-    return v1 * (1 - a) + v2 * a;
-}
 
 export interface ParticleStyle {
     readonly rgbRange: RgbRange;
@@ -74,16 +70,13 @@ class Particle {
         readonly endPos: Vec2,
         readonly color: string,
     ) {
-        //console.log(this.color);
     }
 
     draw(ctx: CanvasRenderingContext2D, counter: number): void {
         const a = (counter - this.startCounter) / (this.endCounter - this.startCounter);
-        //console.log(a);
         const x = this.startPos.x * (1 - a) + this.endPos.x * a;
         const y = this.startPos.y * (1 - a) + this.endPos.y * a;
         const op = 1 - a * 0.7;
-        //console.log(x, y);
         
         ctx.fillStyle = this.color + Math.floor(op * 255).toString(16).padStart(0, "0");
         ctx.fillRect(x, y, 1, 1);

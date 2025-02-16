@@ -6,6 +6,8 @@ import { ImageCollider } from "../../utils/imageCollider";
 import { Rgb } from "../../utils/rgb";
 import { RgbRange } from "../../utils/rgbRange";
 import { sceneController } from "../sceneController";
+import { Explosion } from "./explosion";
+import { LandingZone } from "./landingZone";
 import { ParticleManager, ParticleStyle, ValueRange } from "./particleManager";
 import { Terrain } from "./terrain";
 
@@ -36,20 +38,30 @@ const rightGusParticleStyle: ParticleStyle = {
 };
 
 const yawThreshold = 6.5;
+const landingHitTestRect = new Rect(6, 17, 7, 1);
+const landingOKThreshold = 0.7; // 甘めの判定
+
+const enum SpaceshipState {
+    /** 噴射とかはできるけどエネルギーは減らない＆移動しない */
+    Ready = 0,
+    Play,
+    /** 着陸成功 */
+    Landing,
+    /** 爆発 */
+    Explosion,
+}
 
 /** 宇宙船に関わる処理をまとめます。 */
 export class Spaceship {
     private readonly imageCollider: ImageCollider;
     private readonly inertia = new MutableVec2(0, 0);
     private remainEnergy: number;
+    private explosion?: Explosion;
+    private state = SpaceshipState.Play;
 
     constructor(private topLeft: MutableVec2, private readonly maxEnergy: number) {
         this.imageCollider = new ImageCollider(spriteSheet.getImageData(spriteInfos.spaceship));
         this.remainEnergy = maxEnergy;
-    }
-
-    draw(ctx: CanvasRenderingContext2D): void {
-        spriteSheet.drawSprite(ctx, this.topLeft.x, this.topLeft.y, spriteInfos.spaceship);
     }
 
     get energyRatio() { return Math.max(this.remainEnergy / this.maxEnergy, 0); }
@@ -64,32 +76,71 @@ export class Spaceship {
         return yaw != null && yaw > +yawThreshold;
     }
 
-    onSimulation(terrain: Terrain, particleMan: ParticleManager): void {
-        this.inertia.y += gravity; // 重力加速度
-
-        if (this.isMainEngineOn && this.remainEnergy > 0) {
-            this.inertia.y -=  mainEnginePower;
-            this.remainEnergy -= mainEnginePower;
-            particleMan.generate(15, mainEngineParticleRect.offset(this.topLeft), mainEngineParticleStyle);
+    onSimulation(terrain: Terrain, particleMan: ParticleManager, landingZone: LandingZone): void {
+        if (this.state == SpaceshipState.Explosion) {
+            this.explosion?.onSimulation();
+            return;
         }
-        if (this.isLeftGusOn && this.remainEnergy > 0) {
-            this.inertia.x += gusPower;
-            this.remainEnergy -= gusPower;
-            particleMan.generate(5, leftGusParticleRect.offset(this.topLeft), leftGusParticleStyle);
-        } else if (this.isRightGusOn && this.remainEnergy > 0) {
-            this.inertia.x -= gusPower;
-            this.remainEnergy -= gusPower;
-            particleMan.generate(5, rightGusParticleRect.offset(this.topLeft), rightGusParticleStyle);
+        if (this.state == SpaceshipState.Landing) {
+            return;
+        }
+
+        // 慣性更新
+        const isReady = this.state == SpaceshipState.Ready;
+        const isPlay = this.state == SpaceshipState.Play;
+
+        if (isPlay) {
+            this.inertia.y += gravity;
+        }
+
+        if (isPlay || isReady) {
+            if (this.isMainEngineOn && this.remainEnergy > 0) {
+                if (isPlay) {
+                    this.inertia.y -=  mainEnginePower;
+                    this.remainEnergy -= mainEnginePower;
+                }
+                particleMan.generate(15, mainEngineParticleRect.offset(this.topLeft), mainEngineParticleStyle);
+            }
+            if (this.isLeftGusOn && this.remainEnergy > 0) {
+                if (isPlay) {
+                    this.inertia.x += gusPower;
+                    this.remainEnergy -= gusPower;
+                } 
+                particleMan.generate(5, leftGusParticleRect.offset(this.topLeft), leftGusParticleStyle);
+            } else if (this.isRightGusOn && this.remainEnergy > 0) {
+                if (isPlay) {
+                    this.inertia.x -= gusPower;
+                    this.remainEnergy -= gusPower;
+                }
+                particleMan.generate(5, rightGusParticleRect.offset(this.topLeft), rightGusParticleStyle);
+            }
         }
 
         const xNew = this.topLeft.x + this.inertia.x;
         const yNew = this.topLeft.y + this.inertia.y;
-
-        if (!terrain.imageCollider.hitTestImage(this.topLeft.x, this.topLeft.y + 1, this.imageCollider)) {
+        if (!terrain.imageCollider.hitTestImage(xNew, yNew, this.imageCollider)) {
+            // 何も当たらなかったので進める
             this.topLeft.x = xNew;
             this.topLeft.y = yNew;
-        } else {
-            
+            return;
         }
+        // 何かと当たった
+
+        // 着陸場所か？
+        const testRect = landingHitTestRect.offset(this.topLeft).union(landingHitTestRect.offset(new Vec2(xNew, yNew)));
+        if (!testRect.intersect(landingZone.rect).isEmpty && this.inertia.y <= landingOKThreshold) {
+            this.topLeft.y = landingZone.rect.y - landingHitTestRect.y + 1;
+            this.state = SpaceshipState.Landing;
+            return;
+        }
+        
+        // 爆発
+        this.state = SpaceshipState.Explosion;
+        this.explosion = new Explosion(new Vec2(this.topLeft.x + spriteInfos.spaceship.width / 2, this.topLeft.y + spriteInfos.spaceship.height / 2));
+    }
+
+    draw(ctx: CanvasRenderingContext2D): void {
+        spriteSheet.drawSprite(ctx, this.topLeft.x, this.topLeft.y, spriteInfos.spaceship);
+        this.explosion?.draw(ctx);
     }
 }

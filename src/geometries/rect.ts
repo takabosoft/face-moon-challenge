@@ -41,6 +41,46 @@ export class Rect {
         return this.objectPosition(scaledSize);
     }
 
+    /**
+     * 他の矩形と重なっている部分（交差部分）を返します。
+     * @param other 交差を確認する矩形
+     * @returns 交差部分の矩形。交差がない場合は幅または高さが0の矩形を返します。
+     */
+    intersect(other: Rect): Rect {
+        const left = Math.max(this.left, other.left);
+        const top = Math.max(this.top, other.top);
+        const right = Math.min(this.right, other.right);
+        const bottom = Math.min(this.bottom, other.bottom);
+        
+        const width = Math.max(0, right - left);
+        const height = Math.max(0, bottom - top);
+        
+        return new Rect(left, top, width, height);
+    }
+
+    /**
+     * 他の矩形と自身を含む最小の矩形（包含矩形）を返します。
+     * @param other 包含する他の矩形
+     * @returns 2つの矩形を完全に含む最小の矩形
+     */
+    union(other: Rect): Rect {
+        // どちらかが空の矩形の場合は特別処理
+        if (this.isEmpty) { return other; }
+        if (other.isEmpty) { return this; }
+        
+        const left = Math.min(this.left, other.left);
+        const top = Math.min(this.top, other.top);
+        const right = Math.max(this.right, other.right);
+        const bottom = Math.max(this.bottom, other.bottom);
+        
+        const width = right - left;
+        const height = bottom - top;
+        
+        return new Rect(left, top, width, height);
+    }
+
+    toString(): string { return `{ x: ${this.x}, y: ${this.y}, width: ${this.width}, height: ${this.height}}`; }
+
     static fromSize(size: Vec2): Rect {
         return new Rect(0, 0, size.x, size.y);
     }
