@@ -15,7 +15,7 @@ async function urlToBase64(url: string): Promise<string> {
     return await blobToBase64(blob);
 }
 
-class ImagePreloader {
+export class ImagePreloader {
     private _img?: JQuery<HTMLImageElement>;
 
     constructor(private readonly url: string) { }
@@ -42,7 +42,7 @@ class ImagePreloader {
 
     /** 失敗は無い予定 */
     get img() {
-        if (this.img == null) { throw "画像読み込みエラー"; }
+        if (this._img == null) { throw "画像読み込みエラー"; }
         return this._img!;
     }
 }
