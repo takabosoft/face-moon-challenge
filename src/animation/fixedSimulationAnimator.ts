@@ -2,7 +2,6 @@ import { AnimationFrameRequester } from "./animationFrameRequester";
 
 /**
  * シミュレーションは固定フレーム、レンダリングは可変フレームみたいにします。  
- * パーティクル移動など線形補間で十分なものはレンダリング側のイベントの利用を想定。
  */
 export class FixedSimulationAnimator {
     private readonly frameRequester = new AnimationFrameRequester();

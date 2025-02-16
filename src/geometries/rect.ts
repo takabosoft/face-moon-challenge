@@ -1,3 +1,4 @@
+import { MutableVec2 } from "./mutableVec2";
 import { Vec2 } from "./vec2";
 
 export class Rect {
@@ -10,6 +11,10 @@ export class Rect {
     get center() { return new Vec2((this.left + this.right) / 2, (this.top + this.bottom) / 2); }
     get size() { return new Vec2(this.width, this.height); }
     get isEmpty() { return this.width <= 0 || this.height <= 0; }
+
+    offset(offset: Vec2 | MutableVec2): Rect {
+        return new Rect(this.x + offset.x, this.y + offset.y, this.width, this.height);
+    }
 
     scale(s: number): Rect {
         return new Rect(this.x * s, this.y * s, this.width * s, this.height * s);
