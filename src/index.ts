@@ -7,7 +7,7 @@
 
 import { faceApi } from "./faces/faceApiWrapper";
 import { LoadingScene } from "./scenes/loading/loadingScene";
-import { SceneController } from "./scenes/sceneController";
+import { sceneController } from "./scenes/sceneController";
 
 $(async () => {
     console.log("OK");
@@ -15,13 +15,11 @@ $(async () => {
 });
 
 class PageController {
-    private readonly sceneController = new SceneController();
-
     async start() {
         window.onunhandledrejection = e => {
             alert(e.reason);
         }
-        $(document.body).append(this.sceneController.element);
-        this.sceneController.changeScene(new LoadingScene());
+        $(document.body).append(sceneController.element);
+        sceneController.changeScene(new LoadingScene());
     }
 }

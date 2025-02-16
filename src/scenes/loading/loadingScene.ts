@@ -1,6 +1,7 @@
 import { faceApi } from "../../faces/faceApiWrapper";
 import { GameScene } from "../game/gameScene";
 import { Scene } from "../scene";
+import { sceneController } from "../sceneController";
 
 export class LoadingScene extends Scene {
     constructor() {
@@ -14,10 +15,10 @@ export class LoadingScene extends Scene {
                 faceApi.readWeights(),
             ]);
 
-            this.sceneController.changeScene(new GameScene());
+            sceneController.changeScene(new GameScene());
             
         } catch (e) {
-            this.sceneController.error(`エラーが発生しました(${e})。`);
+            sceneController.error(`エラーが発生しました(${e})。`);
         }
     }
 }
