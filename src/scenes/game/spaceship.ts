@@ -14,6 +14,20 @@ const mainEngineParticleStyle: ParticleStyle = {
     lifeRange: new ValueRange(6, 9),
 };
 
+const leftGusParticleRect = new Rect(4, 4, 1, 2 - 1);
+const leftGusParticleStyle: ParticleStyle = {
+    rgbRange: new RgbRange(new Rgb(0, 244, 244), new Rgb(255, 255, 255)),
+    dir: new Vec2(-1, 0),
+    speedRange: new ValueRange(0.5, 2),
+    lifeRange: new ValueRange(4, 7),
+};
+
+const rightGusParticleRect = new Rect(12, 4, 1, 2 - 1);
+const rightGusParticleStyle: ParticleStyle = {
+    ...leftGusParticleStyle,
+    dir: new Vec2(+1, 0),
+};
+
 /** 宇宙船に関わる処理をまとめます。 */
 export class Spaceship {
     private readonly imageCollider: ImageCollider;
@@ -40,6 +54,9 @@ export class Spaceship {
             
         }
 
+        particleMan.generate(5, leftGusParticleRect.offset(this.topLeft), leftGusParticleStyle);
+        particleMan.generate(5, rightGusParticleRect.offset(this.topLeft), rightGusParticleStyle);
         particleMan.generate(15, mainEngineParticleRect.offset(this.topLeft), mainEngineParticleStyle);
+        
     }
 }
