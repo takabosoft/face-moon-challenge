@@ -5,7 +5,6 @@
  * Release Build: npx webpack --mode=production
  */
 
-import { faceApi } from "./faces/faceApiWrapper";
 import { LoadingScene } from "./scenes/loading/loadingScene";
 import { sceneController } from "./scenes/sceneController";
 
@@ -21,5 +20,12 @@ class PageController {
         }
         $(document.body).append(sceneController.element);
         sceneController.changeScene(new LoadingScene());
+
+        // キーボード操作による誤作動を回避します。
+        window.addEventListener("keydown", e => {
+            if (e.target instanceof HTMLButtonElement && (e.key == "Enter" || e.key == " ")) {
+                e.preventDefault();
+            }
+        }, true);
     }
 }
