@@ -23,17 +23,18 @@ export class GameCanvas extends Component {
         this.canvas.width = size.x * scale;
         this.canvas.height = size.y * scale;
         this.ctx = this.canvas.getContext("2d")!;
+        this.ctx.imageSmoothingEnabled = false;
     }
 
     /**
      * ステージが真ん中に表示されるようにコンテキストのトランスフォームを調整します。
-     * @param stageSize 
+     * @param stageSize ステージサイズ
      */
     setupTransform(stageSize: Vec2): void {
         this.ctx.resetTransform();
-        const targetRect = new Rect(0, 0, this.canvas.width, this.canvas.height).deflate({ bottom: EnergyBar.height }).objectFitContain(stageSize);
-        this.ctx.translate(targetRect.x, targetRect.y);
-        this.ctx.scale(targetRect.width / stageSize.x, targetRect.height / stageSize.y);
+        const renderTargetRect = new Rect(0, 0, this.canvas.width, this.canvas.height).deflate({ bottom: EnergyBar.height * scale }).objectFitContain(stageSize);
+        this.ctx.translate(renderTargetRect.x, renderTargetRect.y);
+        this.ctx.scale(renderTargetRect.width / stageSize.x, renderTargetRect.height / stageSize.y);
     }
 
     clear(): void {
