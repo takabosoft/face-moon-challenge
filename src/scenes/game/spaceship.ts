@@ -11,9 +11,9 @@ import { LandingZone } from "./landingZone";
 import { ParticleManager, ParticleStyle, ValueRange } from "./particleManager";
 import { Terrain } from "./terrain";
 
-const gravity = 0.02;
-const mainEnginePower = 0.045;
-const gusPower = 0.005;
+const gravity = 0.01; // 上げると難しい
+const mainEnginePower = gravity * 3; // 2～5
+const gusPower = 0.002;
 
 const mainEngineParticleRect = new Rect(5, 15, 7 - 1, 1);
 const mainEngineParticleStyle: ParticleStyle = {
@@ -39,7 +39,7 @@ const rightGusParticleStyle: ParticleStyle = {
 
 const yawThreshold = 6.0;
 const landingHitTestRect = new Rect(6, 17, 7, 1);
-const landingOKThreshold = 0.7; // 甘めの判定
+const landingOKThreshold = 0.5; // 甘めの判定
 
 const enum SpaceshipState {
     /** 噴射とかはできるけどエネルギーは減らない＆移動しない */
