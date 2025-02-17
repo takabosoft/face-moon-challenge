@@ -1,5 +1,3 @@
-import { DynamicFrameTweenAnimator } from "../animation/dynamicFrameTweenAnimator";
-import { easeInOutQuintic, lerpNumber } from "../animation/easing";
 import { Component } from "../components/component";
 import { VirtualScreen } from "../components/virtualScreen";
 import { FaceStateTracker } from "../faces/faceStateTracker";
