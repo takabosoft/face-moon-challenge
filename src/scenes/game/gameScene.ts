@@ -1,16 +1,19 @@
 import { FixedSimulationAnimator } from "../../animation/fixedSimulationAnimator";
+import { gameState } from "../../data/gameState";
 import { MutableVec2 } from "../../geometries/mutableVec2";
 import { Rect } from "../../geometries/rect";
-import { spriteInfos } from "../../spriteSheet";
+import { spriteInfos } from "../../data/spriteSheet";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
 import { EnergyBar } from "./energyBar";
 import { GameCanvas } from "./gameCanvas";
 import { LandingZone } from "./landingZone";
+import { GameClearMenu } from "./menus/gameClearMenu";
 import { GameOverMenu } from "./menus/gameOverMenu";
 import { ParticleManager } from "./particleManager";
 import { Spaceship } from "./spaceship";
 import { Terrain } from "./terrain";
+import { faceMoonChallengeLocalStorage } from "../../data/faceMoonChallengeLocalStorage";
 
 const enum GameSceneState {
     Ready_3 = 0,
@@ -59,9 +62,10 @@ export class GameScene extends Scene {
         );
 
         // ステージデータ準備
-        this.terrain = new Terrain(spriteInfos.stage1Terrain);
-        this.landingZone = new LandingZone(new Rect(29, 139, 38, 1));
-        this.spaceship = new Spaceship(new MutableVec2((spriteInfos.stage1Terrain.width - spriteInfos.spaceship.width) / 2, 16), 50);
+        const info = gameState.stageInfo;
+        this.terrain = new Terrain(info.terrainRect);
+        this.landingZone = new LandingZone(info.landingZone);
+        this.spaceship = new Spaceship(new MutableVec2(info.starshipPos.x, info.starshipPos.y), info.energy);
     }
 
     override async onStartScene() {
@@ -109,6 +113,10 @@ export class GameScene extends Scene {
                 if (this.spaceship.isExploded) {
                     this.state = GameSceneState.GameOver;
                     sceneController.showOverlayMenu(new GameOverMenu().element);
+                } else if (this.spaceship.isLanded) {
+                    this.state = GameSceneState.Clear;
+                    faceMoonChallengeLocalStorage.clearStageIndex = Math.max(faceMoonChallengeLocalStorage.clearStageIndex, gameState.stageIndex);
+                    sceneController.showOverlayMenu(new GameClearMenu().element);
                 }
                 break;
             case GameSceneState.Clear:
