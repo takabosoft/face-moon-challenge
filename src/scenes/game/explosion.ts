@@ -1,5 +1,5 @@
 import { Vec2 } from "../../geometries/vec2";
-import { spriteInfos, spriteSheet } from "../../spriteSheet";
+import { spriteInfos, spriteSheet } from "../../data/spriteSheet";
 import { rndRange } from "../../utils/random";
 
 /** 爆裂魔法 */

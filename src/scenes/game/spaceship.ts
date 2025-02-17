@@ -1,7 +1,7 @@
 import { MutableVec2 } from "../../geometries/mutableVec2";
 import { Rect } from "../../geometries/rect";
 import { Vec2 } from "../../geometries/vec2";
-import { spriteInfos, spriteSheet } from "../../spriteSheet";
+import { spriteInfos, spriteSheet } from "../../data/spriteSheet";
 import { ImageCollider } from "../../utils/imageCollider";
 import { Rgb } from "../../utils/rgb";
 import { RgbRange } from "../../utils/rgbRange";

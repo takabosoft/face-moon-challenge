@@ -1,5 +1,5 @@
 import { Rect } from "../../geometries/rect";
-import { spriteSheet } from "../../spriteSheet";
+import { spriteSheet } from "../../data/spriteSheet";
 import { ImageCollider } from "../../utils/imageCollider";
 
 /**

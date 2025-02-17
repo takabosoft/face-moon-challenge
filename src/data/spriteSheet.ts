@@ -1,8 +1,9 @@
-import { Rect } from "./geometries/rect";
-import { ImagePreloader } from "./utils/imagePreloader";
+import { Rect } from "../geometries/rect";
+import { ImagePreloader } from "../utils/imagePreloader";
 
 export const spriteInfos = {
     stage1Terrain: new Rect(2, 2, 96, 156),
+    stage2Terrain: new Rect(140, 2, 96, 156),
     spaceship: new Rect(101, 2, 17, 16),
     explosion: new Rect(121, 2, 16, 14),
 } as const;

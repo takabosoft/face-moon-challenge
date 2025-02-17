@@ -1,5 +1,5 @@
 import { faceApi } from "../../faces/faceApiWrapper";
-import { spriteSheet } from "../../spriteSheet";
+import { spriteSheet } from "../../data/spriteSheet";
 import { GameScene } from "../game/gameScene";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
