@@ -29,12 +29,14 @@ export class FaceStateTracker extends Component {
         this.video.srcObject = stream;
     }
 
-    async startTrack() {
+    async startTrack(): Promise<boolean> {
         try {
             await this.startVideoStream();
             /*no await*/ this.startTrackImpl();
+            return true;
         } catch (e) {
             sceneController.error(`カメラの初期化に失敗しました。\n${e}`);
+            return false;
         }
     }
 

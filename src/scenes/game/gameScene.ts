@@ -65,11 +65,11 @@ export class GameScene extends Scene {
     }
 
     override async onStartScene() {
-        await sceneController.faceStateTracker.startTrack();
+        if (!await sceneController.faceStateTracker.startTrack()) {
+            return;
+        }
         this.gameCanvas.setupTransform(this.terrain.spriteRect.size);
         this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
-
-        //sceneController.showOverlayMenu(new GameOverMenu().element);
     }
 
     /** シミュレーションとしてゲームの時間を進めます（固定フレーム）。 */
@@ -78,28 +78,41 @@ export class GameScene extends Scene {
         this.landingZone.onSimulation();
         this.spaceship.onSimulation(this.terrain, this.particleMan, this.landingZone);
 
-        // カウントダウン的な
-        if (this.state < GameSceneState.Play) {
-            this.readyCount++;
-            if (this.readyCount > 25) {
-                this.readyCount = 0;
-                this.state++;
-                switch (this.state) {
-                    case GameSceneState.Ready_2:
-                        this.readyText.text("2");
-                        break;
-                    case GameSceneState.Ready_1:
-                        this.readyText.text("1");
-                        break;
-                    case GameSceneState.Ready_GO:
-                        this.readyText.text("GO!");
-                        break;
-                    case GameSceneState.Play:
-                        this.readyText.remove();
-                        this.spaceship.play();
-                        break;
+        switch (this.state) {
+            case GameSceneState.Ready_3:
+            case GameSceneState.Ready_2:
+            case GameSceneState.Ready_1:
+            case GameSceneState.Ready_GO:
+                // カウントダウン的な
+                this.readyCount++;
+                if (this.readyCount > 25) {
+                    this.readyCount = 0;
+                    this.state++;
+                    switch (this.state) {
+                        case GameSceneState.Ready_2:
+                            this.readyText.text("2");
+                            break;
+                        case GameSceneState.Ready_1:
+                            this.readyText.text("1");
+                            break;
+                        case GameSceneState.Ready_GO:
+                            this.readyText.text("GO!");
+                            break;
+                        case GameSceneState.Play:
+                            this.readyText.remove();
+                            this.spaceship.play();
+                            break;
+                    }
                 }
-            }
+                break;
+            case GameSceneState.Play:
+                if (this.spaceship.isExploded) {
+                    this.state = GameSceneState.GameOver;
+                    sceneController.showOverlayMenu(new GameOverMenu().element);
+                }
+                break;
+            case GameSceneState.Clear:
+                break;
         }
     }
 
