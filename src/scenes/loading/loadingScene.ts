@@ -3,6 +3,7 @@ import { spriteSheet } from "../../data/spriteSheet";
 import { GameScene } from "../game/gameScene";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
+import { SoundTestScene } from "../sound_test/soundTestScene";
 
 export class LoadingScene extends Scene {
     constructor() {
@@ -17,7 +18,9 @@ export class LoadingScene extends Scene {
                 spriteSheet.load(),
             ]);
 
-            sceneController.changeScene(new GameScene());
+            //sceneController.changeScene(new GameScene());
+            sceneController.changeScene(new SoundTestScene());
+            
             
         } catch (e) {
             sceneController.error(`エラーが発生しました(${e})。`);
