@@ -59,6 +59,7 @@ export class Spaceship {
     private remainEnergy: number;
     private explosion?: Explosion;
     private state = SpaceshipState.Ready;
+    private landingCount = 0;
 
     constructor(private topLeft: MutableVec2, private readonly maxEnergy: number) {
         this.imageCollider = new ImageCollider(spriteSheet.getImageData(spriteInfos.spaceship));
@@ -66,7 +67,8 @@ export class Spaceship {
     }
 
     get energyRatio() { return Math.max(this.remainEnergy / this.maxEnergy, 0); }
-
+    get isExploded() { return this.state == SpaceshipState.Explosion && this.explosion != null && this.explosion.counter > 40; }
+    get isLanded() { return this.state == SpaceshipState.Landing && this.landingCount > 40; }
     private get isMainEngineOn() { return sceneController.faceStateTracker.lastFaceState?.isMouthOpen ?? false; }
     private get isLeftGusOn() {  
         const yaw = sceneController.faceStateTracker.lastFaceState?.yaw;
@@ -89,6 +91,7 @@ export class Spaceship {
             return;
         }
         if (this.state == SpaceshipState.Landing) {
+            this.landingCount++;
             return;
         }
 
