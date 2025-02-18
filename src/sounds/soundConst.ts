@@ -1,0 +1,1 @@
+export const shortGainFade = 0.001;
