@@ -10,6 +10,7 @@ import { Explosion } from "./explosion";
 import { LandingZone } from "./landingZone";
 import { ParticleManager, ParticleStyle, ValueRange } from "./particleManager";
 import { Terrain } from "./terrain";
+import { soundManager } from "../../sounds/soundManager";
 
 const gravity = 0.01; // 上げると難しい
 const mainEnginePower = gravity * 3; // 2～5
@@ -103,6 +104,10 @@ export class Spaceship {
             this.inertia.y += gravity;
         }
 
+        let mainEngineProc = false;
+        let leftGusProc = false;
+        let rightGusProc = false;
+
         if (isPlay || isReady) {
             if (this.isMainEngineOn && this.remainEnergy > 0) {
                 if (isPlay) {
@@ -110,6 +115,7 @@ export class Spaceship {
                     this.remainEnergy -= mainEnginePower;
                 }
                 particleMan.generate(15, mainEngineParticleRect.offset(this.topLeft), mainEngineParticleStyle);
+                mainEngineProc = true;
             }
             if (this.isLeftGusOn && this.remainEnergy > 0) {
                 if (isPlay) {
@@ -117,14 +123,20 @@ export class Spaceship {
                     this.remainEnergy -= gusPower;
                 } 
                 particleMan.generate(5, leftGusParticleRect.offset(this.topLeft), leftGusParticleStyle);
+                leftGusProc = true;
             } else if (this.isRightGusOn && this.remainEnergy > 0) {
                 if (isPlay) {
                     this.inertia.x -= gusPower;
                     this.remainEnergy -= gusPower;
                 }
                 particleMan.generate(5, rightGusParticleRect.offset(this.topLeft), rightGusParticleStyle);
+                rightGusProc = true;
             }
         }
+
+        mainEngineProc ? soundManager.mainEngineSound.play() : soundManager.mainEngineSound.stop();
+        leftGusProc ? soundManager.leftGusSound.play() : soundManager.leftGusSound.stop();
+        rightGusProc ? soundManager.rightGusSound.play() : soundManager.rightGusSound.stop();
 
         const xNew = this.topLeft.x + this.inertia.x;
         const yNew = this.topLeft.y + this.inertia.y;
@@ -141,12 +153,19 @@ export class Spaceship {
         if (!testRect.intersect(landingZone.rect).isEmpty && this.inertia.y <= landingOKThreshold) {
             this.topLeft.y = landingZone.rect.y - landingHitTestRect.y + 1;
             this.state = SpaceshipState.Landing;
+            soundManager.leftGusSound.stop();
+            soundManager.rightGusSound.stop();
+            soundManager.mainEngineSound.stop();
             return;
         }
         
         // 爆発
         this.state = SpaceshipState.Explosion;
         this.explosion = new Explosion(new Vec2(this.topLeft.x + spriteInfos.spaceship.width / 2, this.topLeft.y + spriteInfos.spaceship.height / 2));
+        soundManager.leftGusSound.stop();
+        soundManager.rightGusSound.stop();
+        soundManager.mainEngineSound.stop();
+        soundManager.playExplosion();
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
