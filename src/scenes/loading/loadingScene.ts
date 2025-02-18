@@ -4,6 +4,7 @@ import { GameScene } from "../game/gameScene";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
 import { SoundTestScene } from "../sound_test/soundTestScene";
+import { gameState } from "../../data/gameState";
 
 export class LoadingScene extends Scene {
     constructor() {
@@ -17,11 +18,7 @@ export class LoadingScene extends Scene {
                 faceApi.readWeights(),
                 spriteSheet.load(),
             ]);
-
-            //sceneController.changeScene(new GameScene());
-            sceneController.changeScene(new SoundTestScene());
-            
-            
+            sceneController.changeScene(gameState.isSoundTest ? new SoundTestScene() : new GameScene());
         } catch (e) {
             sceneController.error(`エラーが発生しました(${e})。`);
         }
