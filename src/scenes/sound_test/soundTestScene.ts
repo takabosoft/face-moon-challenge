@@ -16,6 +16,8 @@ export class SoundTestScene extends Scene {
 
             $(`<button class="button">`).text("Engine Play").on("click", () => soundManager.mainEngineSound.play()),
             $(`<button class="button">`).text("Engine Stop").on("click", () => soundManager.mainEngineSound.stop()),
+
+            $(`<button class="button">`).text("爆発").on("click", () => soundManager.playExplosion()),
         );
     }
 }

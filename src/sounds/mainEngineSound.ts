@@ -20,7 +20,7 @@ export class MainEngineSound {
         this.audioBufferSourceNode = this.audioContext.createBufferSource();
         this.audioBufferSourceNode.buffer = this.whiteNoiseAudioBuffer;
         this.audioBufferSourceNode.loop = true;
-        this.audioBufferSourceNode.playbackRate.value = 0.1;
+        this.audioBufferSourceNode.playbackRate.value = 0.08;
         this.audioBufferSourceNode.connect(this.gainNode);
         this.gainNode.gain.value = 0;
         this.gainNode.gain.linearRampToValueAtTime(this.gain, this.audioContext.currentTime + shortGainFade);
