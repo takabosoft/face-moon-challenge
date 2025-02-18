@@ -1,3 +1,4 @@
+import { Button } from "../../../components/button";
 import { Component } from "../../../components/component";
 import { gameState } from "../../../data/gameState";
 import { sceneController } from "../../sceneController";
@@ -17,8 +18,8 @@ export class GameClearMenu extends Component {
             $(`<div class="stage">`).text(`ステージ${gameState.stageInfo.title}`),
             $(`<div class="title">`).text("着陸成功"),
             $(`<div class="message">`).text(msgs[Math.floor(msgs.length * Math.random())]),
-            $(`<button class="button">`).text("もう一回遊ぶ").on("click", () => sceneController.changeScene(new GameScene())),
-            $(`<button class="button">`).text("ステージセレクト").on("click", () => {}), // TODO:
+            new Button("もう一回遊ぶ", () => sceneController.changeScene(new GameScene())).element,
+            new Button("ステージセレクト", () => {}).element, // TODO:
         );
     }
 }
