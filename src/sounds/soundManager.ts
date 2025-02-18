@@ -32,16 +32,17 @@ class SoundManager {
         }
         return buffer;
     }
-    
-    playExplosion() {
+
+    /** 爆発音の再生 */
+    playExplosion(): void {
         for (let i = 0; i < 5; i++) {
             this.playExplosionImp(rndRange(0, 0.1), rndRange(1.0, 1.6), rndRange(0.01, 0.03), 0.2);
         }
     }
 
-    private playExplosionImp(offsetTime: number, duration = 1.5, rate = 0.01, gain = 0.5) {   
+    private playExplosionImp(offsetTime: number, duration = 1.5, rate = 0.01, gain = 0.5) {
         const playTime = this.audioContext.currentTime + offsetTime;
-    
+
         const noise = this.audioContext.createBufferSource();
         noise.buffer = this.whiteNoiseAudioBuffer;
         noise.playbackRate.value = rate;
@@ -58,12 +59,38 @@ class SoundManager {
         // 再生開始
         noise.start(playTime);
         noise.stop(playTime + duration);
-        
+
         noise.onended = () => {
             noise.disconnect();
             gainNode.disconnect();
         };
     }
+
+    /** ボタンタップ音の再生 */
+    playButtonTap() {
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+
+        // 音の設定
+        oscillator.type = "sine";  // サイン波
+        oscillator.frequency.setValueAtTime(1300, this.audioContext.currentTime);
+
+        // ボリュームの設定
+        gainNode.gain.setValueAtTime(0.05, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+
+        // 接続
+        oscillator.connect(gainNode).connect(this.audioContext.destination);
+
+        // 再生
+        oscillator.start();
+        oscillator.stop(this.audioContext.currentTime + 0.1);
+        oscillator.onended = () => {
+            oscillator.disconnect();
+            gainNode.disconnect();
+        }
+    }
+
 }
 
 export const soundManager = new SoundManager();
