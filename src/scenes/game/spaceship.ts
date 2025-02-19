@@ -155,18 +155,14 @@ export class Spaceship {
         if (!testRect.intersect(landingZone.rect).isEmpty && this.inertia.y <= landingOKThreshold) {
             this.topLeft.y = landingZone.rect.y - landingHitTestRect.y + 1;
             this.state = SpaceshipState.Landing;
-            soundManager.leftGusSound.stop();
-            soundManager.rightGusSound.stop();
-            soundManager.mainEngineSound.stop();
+            soundManager.stopSpaceshipSounds();
             return;
         }
         
         // 爆発
         this.state = SpaceshipState.Explosion;
         this.explosion = new Explosion(new Vec2(this.topLeft.x + spriteInfos.spaceship.width / 2, this.topLeft.y + spriteInfos.spaceship.height / 2));
-        soundManager.leftGusSound.stop();
-        soundManager.rightGusSound.stop();
-        soundManager.mainEngineSound.stop();
+        soundManager.stopSpaceshipSounds();
         soundManager.playExplosion();
     }
 

@@ -91,6 +91,12 @@ class SoundManager {
         }
     }
 
+    stopSpaceshipSounds(): void {
+        this.leftGusSound.stop();
+        this.rightGusSound.stop();
+        this.mainEngineSound.stop();
+    }
+
 }
 
 export const soundManager = new SoundManager();
