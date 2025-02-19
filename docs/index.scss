@@ -63,7 +63,7 @@ body {
             transform-origin: 50% 0;
             image-rendering: pixelated;
             filter: drop-shadow(0 0 2px white);
-            z-index: 1;
+            will-change: filter; // iPhoneでdrop-shadowが掛けるのを回避
         }
     }
 
