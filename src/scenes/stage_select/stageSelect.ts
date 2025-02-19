@@ -13,7 +13,7 @@ export class StageSelectScene extends Scene {
         this.element.append(
             $(`<div class="title">`).text("ステージセレクト"),
             stageInfos.map((stageInfo, stageIdx) => this.buildStateButton(stageInfo, stageIdx).element),
-            new Button("タイトルへ戻る", () => sceneController.changeScene(new TitleScene())).element
+            new Button("タイトルへ戻る", () => sceneController.changeScene(new TitleScene())).element.css("margin-top", 48),
         );
     }
 

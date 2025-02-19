@@ -67,6 +67,9 @@ export class GameScene extends Scene {
     }
 
     override async onStartScene() {
+        /*if (!await sceneController.faceStateTracker.startTrack()) {
+            return;
+        }*/
         this.gameCanvas.setupTransform(this.terrain.spriteRect.size, { bottom: EnergyBar.height });
         this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
     }
