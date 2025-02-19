@@ -3,6 +3,7 @@ import { Button } from "../../components/button";
 import { spriteInfos, spriteSheet } from "../../data/spriteSheet";
 import { MutableVec2 } from "../../geometries/mutableVec2";
 import { Vec2 } from "../../geometries/vec2";
+import { soundManager } from "../../sounds/soundManager";
 import { GameCanvas } from "../game/gameCanvas";
 import { ParticleManager } from "../game/particleManager";
 import { Spaceship } from "../game/spaceship";
@@ -47,6 +48,7 @@ export class TitleScene extends Scene {
 
     override onEndScene(): void {
         this.fixedSimAnimator.stop();
+        soundManager.stopSpaceshipSounds();
     }
 
     private onSimulation(): void {

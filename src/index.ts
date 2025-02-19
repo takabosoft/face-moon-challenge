@@ -10,10 +10,7 @@ import { sceneController } from "./scenes/sceneController";
 import { SoundTestScene } from "./scenes/sound_test/soundTestScene";
 import { TermsScene } from "./scenes/terms/termsScene";
 
-$(async () => {
-    console.log("OK");
-    new PageController().start();
-});
+$(async () => new PageController().start());
 
 class PageController {
     async start() {

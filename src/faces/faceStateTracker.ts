@@ -6,10 +6,11 @@ import { FaceState, faceStateChecker } from "./faceStateChecker";
 import { VideoDisplayStyle, videoDisplayStyleInfos } from "./videoDisplayStyle";
 
 export class FaceStateTracker extends Component {
-    private readonly videoEl = $(`<video class="video" autoplay muted playsinline>`);
+    private readonly videoEl = $(`<video class="video" muted playsinline>`);
     private _timeout = new TimeoutTimer();
     private _lastFaceState?: FaceState;
     private _isStarted = false;
+    private _detecting = false;
 
     constructor() {
         super();
@@ -27,12 +28,19 @@ export class FaceStateTracker extends Component {
     }
 
     private async startVideoStream() {
-        //if (this.video.srcObject != null) { return; }
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "user" },
             audio: false,
         });
+
+        // face-apiで検出中にビデオを切り替えると駄目そうなので回避策を入れます。
+        while (this._detecting) {
+            await new Promise(r => setTimeout(r, 0));
+        }
+        this.video.pause();
+        this.video.srcObject = null;
         this.video.srcObject = stream;
+        this.video.play();
     }
 
     async startTrack(): Promise<boolean> {
@@ -51,7 +59,9 @@ export class FaceStateTracker extends Component {
 
     private async startTrackImpl() {
         while (true) {
+            this._detecting = true;
             this._lastFaceState = await faceStateChecker.getFaceState(this.video);
+            this._detecting = false;
             await this._timeout.start(0);
         }
     }
