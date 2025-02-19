@@ -2,6 +2,7 @@ import { Button } from "../../../components/button";
 import { Component } from "../../../components/component";
 import { gameState } from "../../../data/gameState";
 import { sceneController } from "../../sceneController";
+import { StageSelectScene } from "../../stage_select/stageSelect";
 import { GameScene } from "../gameScene";
 
 const msgs: string[] = [
@@ -19,7 +20,7 @@ export class GameOverMenu extends Component {
             $(`<div class="title">`).text("着陸失敗"),
             $(`<div class="message">`).text(msgs[Math.floor(msgs.length * Math.random())]),
             new Button("再チャレンジ", () => sceneController.changeScene(new GameScene())).element,
-            new Button("ステージセレクト", () => {}).element, // TODO:
+            new Button("ステージセレクト", () => sceneController.changeScene(new StageSelectScene())).element,
         );
     }
 }

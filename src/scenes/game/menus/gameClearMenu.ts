@@ -2,6 +2,7 @@ import { Button } from "../../../components/button";
 import { Component } from "../../../components/component";
 import { gameState } from "../../../data/gameState";
 import { sceneController } from "../../sceneController";
+import { StageSelectScene } from "../../stage_select/stageSelect";
 import { GameScene } from "../gameScene";
 
 const msgs: string[] = [
@@ -19,7 +20,7 @@ export class GameClearMenu extends Component {
             $(`<div class="title">`).text("着陸成功"),
             $(`<div class="message">`).text(msgs[Math.floor(msgs.length * Math.random())]),
             new Button("もう一回遊ぶ", () => sceneController.changeScene(new GameScene())).element,
-            new Button("ステージセレクト", () => {}).element, // TODO:
+            new Button("ステージセレクト", () => sceneController.changeScene(new StageSelectScene())).element,
         );
     }
 }

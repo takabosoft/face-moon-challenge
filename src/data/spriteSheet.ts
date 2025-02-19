@@ -6,6 +6,8 @@ export const spriteInfos = {
     stage2Terrain: new Rect(140, 2, 96, 156),
     spaceship: new Rect(101, 2, 17, 16),
     explosion: new Rect(121, 2, 16, 14),
+    instruction1: new Rect(2, 161, 81, 56),
+    instruction2: new Rect(86, 161, 81, 56),
 } as const;
 
 
@@ -14,7 +16,7 @@ class SpriteSheet {
     private ctx = this.canvas.getContext("2d")!;
 
     async load() {
-        const img = new ImagePreloader("./spriteSheet.png");
+        const img = new ImagePreloader("./spriteSheet.png?rev=0");
         await img.load();
         this.canvas.width = img.img[0].naturalWidth;
         this.canvas.height = img.img[0].naturalHeight;

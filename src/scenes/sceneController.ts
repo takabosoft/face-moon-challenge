@@ -20,6 +20,7 @@ class SceneController extends Component {
     readonly faceStateTracker = new FaceStateTracker();
     private readonly screen1 = new VirtualScreen(new Vec2(375, 630));
     private screen2?: VirtualScreen;
+    private _curScene?: Scene;
 
     constructor() {
         super();
@@ -45,8 +46,10 @@ class SceneController extends Component {
     async changeScene(newScene: Scene): Promise<void> {
         //console.log("changeScene:", newScene);
 
+        this._curScene?.onEndScene();
         this.closeOverlayMenu();
         this.screen1.element.empty().append(newScene.element);
+        this._curScene = newScene;
         newScene.onStartScene();
     }
 
