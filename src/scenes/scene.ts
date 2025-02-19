@@ -10,4 +10,9 @@ export class Scene extends Component {
     onStartScene(): void {
 
     }
+
+    /** 画面が消えるときに呼ばれます。 */
+    onEndScene(): void {
+
+    }
 }

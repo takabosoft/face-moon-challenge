@@ -86,7 +86,7 @@ export class Spaceship {
         }
     }
 
-    onSimulation(terrain: Terrain, particleMan: ParticleManager, landingZone: LandingZone): void {
+    onSimulation(terrain: Terrain | undefined, particleMan: ParticleManager, landingZone: LandingZone | undefined): void {
         if (this.state == SpaceshipState.Explosion) {
             this.explosion?.onSimulation();
             return;
@@ -137,6 +137,8 @@ export class Spaceship {
         mainEngineProc ? soundManager.mainEngineSound.play() : soundManager.mainEngineSound.stop();
         leftGusProc ? soundManager.leftGusSound.play() : soundManager.leftGusSound.stop();
         rightGusProc ? soundManager.rightGusSound.play() : soundManager.rightGusSound.stop();
+
+        if (terrain == null || landingZone == null) { return; }
 
         const xNew = this.topLeft.x + this.inertia.x;
         const yNew = this.topLeft.y + this.inertia.y;

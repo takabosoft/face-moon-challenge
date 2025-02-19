@@ -19,6 +19,7 @@ body {
     line-height: 1.0;
     font-weight: 400;
     background: black;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .button {
@@ -52,6 +53,7 @@ body {
     position: absolute;
     inset: 0;
     color: white;
+    //background: rgba(0, 0, 255, 0.3);
 }
 
 .scene-ctrl {
@@ -83,8 +85,37 @@ body {
     transform: scaleX(-1);
     object-fit: cover;
 
+    &.off {
+        opacity: 0;    
+    }
+
     &.dark {
-        filter: brightness(0.3);
+        filter: brightness(0.5);
+    }
+
+    
+}
+
+// 利用規約
+.term-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    white-space: break-spaces;
+    word-break: break-word;
+
+    .title {
+        font-size: 24px;
+    }
+
+    ul {
+        margin: 24px 8px 24px 0;
+    }
+
+    li {
+        line-height: 1.5;
+        font-family: "Noto Sans JP";
     }
 }
 
@@ -105,6 +136,75 @@ body {
     white-space: break-spaces;
     word-break: break-word;
     text-align: center;
+}
+
+// タイトル画面
+.title-scene {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    white-space: break-spaces;
+    word-break: break-word;
+
+    .title {
+        text-shadow: 0 2px 3px black;
+        margin-bottom: 16px;
+
+        .face {
+            font-size: 84px;
+        }
+
+        .de {
+            font-size: 20px;
+        }
+
+        .moon {
+            font-size: 50px;
+            color: yellow;
+        }
+
+        .challenge {
+            line-height: 1.5;
+            font-size: 24px;
+            color: red;
+        }
+    }
+
+    .video-style-selector-container {
+        margin-top: 16px;
+        display: flex;
+        width: 220px;
+        align-items: center;
+    }
+
+    .video-style-selector {
+        flex-grow: 1;
+        appearance: none;
+        box-sizing: border-box;
+        height: 48px;
+        border: 2px solid white;
+        background: black;
+        border-radius: 8px;
+        color: white;
+        text-shadow: 0 2px 3px black;
+        font-family: inherit;
+        font-size: 20px;
+        touch-action: manipulation;
+        cursor: pointer;
+        padding: 0;
+        text-align-last: center;
+        text-align: center;
+    
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    > button {
+        margin: 16px 0 32px 0;
+    }
 }
 
 // ゲームシーン

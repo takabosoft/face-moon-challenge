@@ -3,6 +3,7 @@ import { stageInfos } from "./stageInfos";
 class GameState {
     readonly urlParams = new URL(location.href).searchParams;
 
+    /** 今遊んでいるステージ */
     stageIndex = 1;
 
     get stageInfo() {

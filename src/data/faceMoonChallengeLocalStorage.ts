@@ -1,15 +1,15 @@
-import { FaceStateTrackerVideoStyle } from "../faces/faceStateTracker";
+import { VideoDisplayStyle, videoDisplayStyleInfos } from "../faces/faceStateTracker";
 
 const key = "face-moon-challenge";
 
 interface FaceMoonChallengeLocalStorageParams {
     readonly clearStageIndex: number;
-    readonly videoStyle: FaceStateTrackerVideoStyle;
+    readonly videoDisplayStyle: VideoDisplayStyle;
 }
 
 export class FaceMoonChallengeLocalStorage {
     private _clearStageIndex = -1;
-    private _videoStyle = FaceStateTrackerVideoStyle.Dark;
+    private _videoDisplayStyle = VideoDisplayStyle.Dark;
 
     constructor() {
         this.load();
@@ -23,9 +23,9 @@ export class FaceMoonChallengeLocalStorage {
         }
     }
 
-    get videoStyle() { return this._videoStyle; }
-    set videoStyle(style: FaceStateTrackerVideoStyle) {
-        this._videoStyle = style;
+    get videoDisplayStyle() { return this._videoDisplayStyle; }
+    set videoDisplayStyle(style: VideoDisplayStyle) {
+        this._videoDisplayStyle = style;
         this.save();
     }
 
@@ -36,7 +36,9 @@ export class FaceMoonChallengeLocalStorage {
             const params = JSON.parse(jsonStr) as FaceMoonChallengeLocalStorageParams;
             if (params == null) { return; }
             this._clearStageIndex = params.clearStageIndex;
-            this._videoStyle = params.videoStyle;
+            if (videoDisplayStyleInfos.find(info => info.style == params.videoDisplayStyle)) {
+                this._videoDisplayStyle = params.videoDisplayStyle;
+            }
         } catch (e) {
             console.error(e);
         }
@@ -45,7 +47,7 @@ export class FaceMoonChallengeLocalStorage {
     private save() {
         const obj: FaceMoonChallengeLocalStorageParams = {
             clearStageIndex: this._clearStageIndex,
-            videoStyle: this._videoStyle,
+            videoDisplayStyle: this._videoDisplayStyle,
         };
         try {
             localStorage.setItem(key, JSON.stringify(obj));

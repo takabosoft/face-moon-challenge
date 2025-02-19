@@ -2,7 +2,7 @@ import { Rect } from "../geometries/rect";
 import { Vec2 } from "../geometries/vec2";
 import { spriteInfos } from "./spriteSheet";
 
-interface StageInfo {
+export interface StageInfo {
     /** ステージ名 */
     readonly title: string;
     /** 地形テクスチャ */

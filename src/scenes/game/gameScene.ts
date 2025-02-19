@@ -1,8 +1,6 @@
 import { FixedSimulationAnimator } from "../../animation/fixedSimulationAnimator";
 import { gameState } from "../../data/gameState";
 import { MutableVec2 } from "../../geometries/mutableVec2";
-import { Rect } from "../../geometries/rect";
-import { spriteInfos } from "../../data/spriteSheet";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
 import { EnergyBar } from "./energyBar";
@@ -38,7 +36,7 @@ const enum GameSceneState {
 export class GameScene extends Scene {
     //private readonly debugText = $(`<div class="debug-text">`);
     private readonly readyText = $(`<div class="ready-text">`).text("3");
-    private readonly gameCanvas = new GameCanvas();
+    private readonly gameCanvas = new GameCanvas(sceneController.screenSize);
     private readonly energyBar = new EnergyBar();
     private readonly fixedSimAnimator = new FixedSimulationAnimator(60);
     private readonly terrain: Terrain;
@@ -69,11 +67,12 @@ export class GameScene extends Scene {
     }
 
     override async onStartScene() {
-        if (!await sceneController.faceStateTracker.startTrack()) {
-            return;
-        }
-        this.gameCanvas.setupTransform(this.terrain.spriteRect.size);
+        this.gameCanvas.setupTransform(this.terrain.spriteRect.size, { bottom: EnergyBar.height });
         this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
+    }
+
+    override onEndScene(): void {
+        this.fixedSimAnimator.stop();
     }
 
     /** シミュレーションとしてゲームの時間を進めます（固定フレーム）。 */

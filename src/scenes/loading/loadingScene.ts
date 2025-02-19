@@ -1,10 +1,8 @@
 import { faceApi } from "../../faces/faceApiWrapper";
 import { spriteSheet } from "../../data/spriteSheet";
-import { GameScene } from "../game/gameScene";
 import { Scene } from "../scene";
 import { sceneController } from "../sceneController";
-import { SoundTestScene } from "../sound_test/soundTestScene";
-import { gameState } from "../../data/gameState";
+import { TitleScene } from "../title/titleScene";
 
 export class LoadingScene extends Scene {
     constructor() {
@@ -18,7 +16,7 @@ export class LoadingScene extends Scene {
                 faceApi.readWeights(),
                 spriteSheet.load(),
             ]);
-            sceneController.changeScene(gameState.isSoundTest ? new SoundTestScene() : new GameScene());
+            sceneController.changeScene(new TitleScene());
         } catch (e) {
             sceneController.error(`エラーが発生しました(${e})。`);
         }
