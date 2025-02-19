@@ -46,8 +46,9 @@ export class GameCanvas extends Component {
     }
 
     clear(): void {
-        this.ctx.save();
+        const oldMat = this.ctx.getTransform();
+        this.ctx.resetTransform();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.restore();
+        this.ctx.setTransform(oldMat);
     }
 }
