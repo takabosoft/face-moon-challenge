@@ -30,7 +30,10 @@ export class TitleScene extends Scene {
                 new VideoDisplayStyleSelector().element,
             ),
             new Button("スタート", () => sceneController.changeScene(new StageSelectScene())).element,
-            $(`<div class="copyright">`).text("Copyright (C) 2025 Takabo Soft"),
+            $(`<div class="copyright">Copyright (C) 2025 <a href="https://takabosoft.com/" target="_blank">Takabo Soft</a></div>`),
+            $(`<div class="sub-menu">`).append(
+                $(`<a href="license.txt" target="_blank">知的財産の表記</a>`),
+            )
         );
     }
 
