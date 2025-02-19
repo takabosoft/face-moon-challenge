@@ -23,6 +23,7 @@ body {
 }
 
 .button {
+    position: relative;
     appearance: none;
     box-sizing: border-box;
     width: 220px;
@@ -46,6 +47,44 @@ body {
 
     &:focus {
         outline: 0;
+    }
+
+    &.clear-badge {
+        &::after {
+            position: absolute;
+            content: "";
+            top: 0;
+            right: 9px;
+            width: 9px;
+            height: 17px;
+            background: url("./badge.png");
+            background-repeat: none;
+            transform: scale(2);
+            transform-origin: 50% 0;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 2px white);
+            z-index: 1;
+        }
+    }
+
+    &.locked {
+        opacity: 0.5;
+        filter: grayscale(1);
+        pointer-events: none;
+
+        &::after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            width: 11px;
+            height: 14px;
+            inset: 0;
+            margin: auto;
+            background: url("./locked.png");
+            background-repeat: none;
+            transform: scale(2);
+            image-rendering: pixelated;
+        }
     }
 }
 
@@ -207,6 +246,25 @@ body {
     }
 }
 
+// ステージセレクト
+.stage-select-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    > .title {
+        font-size: 32px;
+        text-shadow: 0 2px 3px black;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    > button + button {
+        margin-top: 16px;
+    }
+}
+
 // ゲームシーン
 .game-scene {
     display: flex;
@@ -311,6 +369,11 @@ body {
 }
 
 .sound-test-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     > button + button {
         margin-top: 8px;
     }

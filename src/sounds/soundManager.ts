@@ -13,9 +13,9 @@ class SoundManager {
     constructor() {
         document.addEventListener("pointerdown", () => this.audioContext.resume(), true);
         this.whiteNoiseAudioBuffer = this.generateWhiteNoise(2);
-        this.leftGusSound = new GusSound(this.audioContext, this.whiteNoiseAudioBuffer, -1, 0.1);
-        this.rightGusSound = new GusSound(this.audioContext, this.whiteNoiseAudioBuffer, +1, 0.1);
-        this.mainEngineSound = new MainEngineSound(this.audioContext, this.whiteNoiseAudioBuffer, 0.1);
+        this.leftGusSound = new GusSound(this.audioContext, this.whiteNoiseAudioBuffer, -1, 0.3);
+        this.rightGusSound = new GusSound(this.audioContext, this.whiteNoiseAudioBuffer, +1, 0.3);
+        this.mainEngineSound = new MainEngineSound(this.audioContext, this.whiteNoiseAudioBuffer, 0.3);
     }
 
     /**
@@ -36,7 +36,7 @@ class SoundManager {
     /** 爆発音の再生 */
     playExplosion(): void {
         for (let i = 0; i < 5; i++) {
-            this.playExplosionImp(rndRange(0, 0.1), rndRange(1.0, 1.6), rndRange(0.01, 0.03), 0.2);
+            this.playExplosionImp(rndRange(0, 0.1), rndRange(1.0, 1.6), rndRange(0.01, 0.03), 0.4);
         }
     }
 
@@ -76,7 +76,7 @@ class SoundManager {
         oscillator.frequency.setValueAtTime(1300, this.audioContext.currentTime);
 
         // ボリュームの設定
-        gainNode.gain.setValueAtTime(0.05, this.audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
 
         // 接続
