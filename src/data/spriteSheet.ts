@@ -6,6 +6,7 @@ export const spriteInfos = {
     stage2Terrain: new Rect(140, 2, 96, 156),
     stage3Terrain: new Rect(239, 2, 96, 156),
     stage4Terrain: new Rect(338, 2, 137, 156),
+    stage5Terrain: new Rect(478, 2, 144, 156),
     spaceship: new Rect(101, 2, 17, 16),
     explosion: new Rect(121, 2, 16, 14),
     instruction1: new Rect(2, 161, 81, 56),

@@ -6,11 +6,9 @@
  */
 
 import { gameState } from "./data/gameState";
-import { LoadingScene } from "./scenes/loading/loadingScene";
 import { sceneController } from "./scenes/sceneController";
 import { SoundTestScene } from "./scenes/sound_test/soundTestScene";
 import { TermsScene } from "./scenes/terms/termsScene";
-import { TitleScene } from "./scenes/title/titleScene";
 
 $(async () => {
     console.log("OK");
@@ -20,11 +18,10 @@ $(async () => {
 class PageController {
     async start() {
         window.onunhandledrejection = e => {
-            alert(e.reason);
+            //alert(e.reason);
         }
         $(document.body).append(sceneController.element);
-        //sceneController.changeScene(gameState.isSoundTest ? new SoundTestScene() : new TermsScene());
-        sceneController.changeScene(new LoadingScene());
+        sceneController.changeScene(gameState.isSoundTest ? new SoundTestScene() : new TermsScene());
 
         // キーボード操作による誤作動を回避します。
         window.addEventListener("keydown", e => {

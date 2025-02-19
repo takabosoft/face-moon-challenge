@@ -35,9 +35,9 @@ export class TitleScene extends Scene {
     }
 
     override async onStartScene() {
-        /*if (!await sceneController.faceStateTracker.startTrack()) {
+        if (!await sceneController.faceStateTracker.startTrack()) {
             return;
-        }*/
+        }
         this.gameCanvas.setupTransform(spriteInfos.instruction1.size);
         this.fixedSimAnimator.start(() => this.onSimulation(), deltaSec => this.onRender(deltaSec));
     }
@@ -56,7 +56,7 @@ export class TitleScene extends Scene {
         this.gameCanvas.clear();
         this.particleMan.draw(this.gameCanvas.ctx);
         spriteSheet.drawSprite(this.gameCanvas.ctx, 0, 0, Math.floor(this.count / 40) % 2 ? spriteInfos.instruction1 : spriteInfos.instruction2);
-        
+
         this.spaceship.draw(this.gameCanvas.ctx);
     }
 }

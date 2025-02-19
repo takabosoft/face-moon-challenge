@@ -4,7 +4,7 @@ class GameState {
     readonly urlParams = new URL(location.href).searchParams;
 
     /** 今遊んでいるステージ */
-    stageIndex = 1;
+    stageIndex = 0;
 
     get stageInfo() {
         return stageInfos[this.stageIndex];

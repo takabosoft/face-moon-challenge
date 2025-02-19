@@ -6,7 +6,7 @@ import { FaceState, faceStateChecker } from "./faceStateChecker";
 import { VideoDisplayStyle, videoDisplayStyleInfos } from "./videoDisplayStyle";
 
 export class FaceStateTracker extends Component {
-    private readonly videoEl = $(`<video class="video" autoplay playsinline>`);
+    private readonly videoEl = $(`<video class="video" autoplay muted playsinline>`);
     private _timeout = new TimeoutTimer();
     private _lastFaceState?: FaceState;
     private _isStarted = false;
@@ -24,12 +24,14 @@ export class FaceStateTracker extends Component {
     set videoDisplayStyle(s: VideoDisplayStyle) {
         this.videoEl.removeClass(videoDisplayStyleInfos.map(s => s.style));
         this.videoEl.addClass(s);
+        this.video.play();
     }
 
     private async startVideoStream() {
         if (this.video.srcObject != null) { return; }
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user" }
+            video: { facingMode: "user" },
+            audio: false,
         });
         this.video.srcObject = stream;
     }
