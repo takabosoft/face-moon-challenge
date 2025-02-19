@@ -244,6 +244,19 @@ body {
     > button {
         margin: 16px 0 32px 0;
     }
+
+    a {
+        color: inherit;
+    }
+
+    > .copyright {
+        
+    }
+
+    > .sub-menu {
+        display: flex;
+        margin-top: 16px;
+    }
 }
 
 // ステージセレクト

@@ -24,11 +24,10 @@ export class FaceStateTracker extends Component {
     set videoDisplayStyle(s: VideoDisplayStyle) {
         this.videoEl.removeClass(videoDisplayStyleInfos.map(s => s.style));
         this.videoEl.addClass(s);
-        this.video.play();
     }
 
     private async startVideoStream() {
-        if (this.video.srcObject != null) { return; }
+        //if (this.video.srcObject != null) { return; }
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "user" },
             audio: false,
@@ -37,11 +36,12 @@ export class FaceStateTracker extends Component {
     }
 
     async startTrack(): Promise<boolean> {
-        if (this._isStarted) { return true; }
         try {
             await this.startVideoStream();
-            /*no await*/ this.startTrackImpl();
-            this._isStarted = true;
+            if (!this._isStarted) {
+                /*no await*/ this.startTrackImpl();
+                this._isStarted = true;
+            }
             return true;
         } catch (e) {
             sceneController.error(`カメラの初期化に失敗しました。\n${e}`);
