@@ -36,7 +36,7 @@ class SoundManager {
     /** 爆発音の再生 */
     playExplosion(): void {
         for (let i = 0; i < 5; i++) {
-            this.playExplosionImp(rndRange(0, 0.1), rndRange(1.0, 1.6), rndRange(0.01, 0.03), 0.4);
+            this.playExplosionImp(rndRange(0, 0.1), rndRange(1.0, 1.6), rndRange(0.01, 0.03), 0.6);
         }
     }
 

@@ -24,10 +24,17 @@ export const stageInfos: readonly StageInfo[] = [
         energy: 50,
     },
     {
-        title: "2. かんたん？",
+        title: "2. 見習い",
         terrainRect: spriteInfos.stage2Terrain,
         landingZone: new Rect(50, 140, 38, 1),
         starshipPos: new Vec2(32, 16),
+        energy: 50,
+    },
+    {
+        title: "3. 一人前",
+        terrainRect: spriteInfos.stage3Terrain,
+        landingZone: new Rect(2, 49, 38, 1),
+        starshipPos: new Vec2(58, 104),
         energy: 50,
     }
 ];
