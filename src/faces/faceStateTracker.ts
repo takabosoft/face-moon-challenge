@@ -3,23 +3,7 @@ import { Component } from "../components/component";
 import { faceMoonChallengeLocalStorage } from "../data/faceMoonChallengeLocalStorage";
 import { sceneController } from "../scenes/sceneController";
 import { FaceState, faceStateChecker } from "./faceStateChecker";
-
-export const enum VideoDisplayStyle {
-    Off = "off",
-    Dark = "dark",
-    Normal = "normal",
-}
-
-interface VideoDisplayStyleInfo {
-    readonly style: VideoDisplayStyle;
-    readonly name: string;
-}
-
-export const videoDisplayStyleInfos: VideoDisplayStyleInfo[] = [
-    { style: VideoDisplayStyle.Off, name: "オフ" },
-    { style: VideoDisplayStyle.Dark, name: "暗くする" },
-    { style: VideoDisplayStyle.Normal, name: "未加工" },
-];
+import { VideoDisplayStyle, videoDisplayStyleInfos } from "./videoDisplayStyle";
 
 export class FaceStateTracker extends Component {
     private readonly videoEl = $(`<video class="video" autoplay playsinline>`);

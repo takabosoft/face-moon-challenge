@@ -1,4 +1,4 @@
-import { VideoDisplayStyle, videoDisplayStyleInfos } from "../faces/faceStateTracker";
+import { VideoDisplayStyle, videoDisplayStyleInfos } from "../faces/videoDisplayStyle";
 
 const key = "face-moon-challenge";
 

@@ -1,6 +1,6 @@
 import { Component } from "../../components/component";
 import { faceMoonChallengeLocalStorage } from "../../data/faceMoonChallengeLocalStorage";
-import { VideoDisplayStyle, videoDisplayStyleInfos } from "../../faces/faceStateTracker";
+import { VideoDisplayStyle, videoDisplayStyleInfos } from "../../faces/videoDisplayStyle";
 import { sceneController } from "../sceneController";
 
 export class VideoDisplayStyleSelector extends Component {
