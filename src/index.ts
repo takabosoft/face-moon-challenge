@@ -5,6 +5,7 @@
  * Release Build: npx webpack --mode=production
  */
 
+import { faceMoonChallengeLocalStorage } from "./data/faceMoonChallengeLocalStorage";
 import { gameState } from "./data/gameState";
 import { sceneController } from "./scenes/sceneController";
 import { SoundTestScene } from "./scenes/sound_test/soundTestScene";
@@ -14,9 +15,15 @@ $(async () => new PageController().start());
 
 class PageController {
     async start() {
-        window.onunhandledrejection = e => {
-            //alert(e.reason);
+        /*window.onunhandledrejection = e => {
+            alert(e.reason);
+        }*/
+
+        if (gameState.isResetData) {
+            faceMoonChallengeLocalStorage.clearStageIndex = -1;
+            history.replaceState(null, "", "/");
         }
+
         $(document.body).append(sceneController.element);
         sceneController.changeScene(gameState.isSoundTest ? new SoundTestScene() : new TermsScene());
 
