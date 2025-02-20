@@ -11,6 +11,7 @@ class GameState {
     }
 
     get isSoundTest() { return this.urlParams.get("soundTest") == "1"; }
+    get isResetData() { return this.urlParams.get("reset") == "1"; }
 }
 
 export const gameState = new GameState();
