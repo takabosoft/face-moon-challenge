@@ -217,6 +217,10 @@ body {
         display: flex;
         width: 220px;
         align-items: center;
+
+        > div {
+            text-shadow: 0 1px 1px black;
+        }
     }
 
     .video-style-selector {
@@ -250,11 +254,14 @@ body {
         color: inherit;
     }
 
-    > .copyright {}
+    > .copyright {
+        text-shadow: 0 1px 1px black;
+    }
 
     > .sub-menu {
         display: flex;
         margin-top: 16px;
+        text-shadow: 0 1px 1px black;
     }
 }
 
@@ -279,6 +286,7 @@ body {
     li {
         line-height: 1.5;
         font-family: "Noto Sans JP";
+        text-shadow: 0 1px 1px black;
 
         span {
             color: red;
@@ -334,6 +342,7 @@ body {
             font-size: 12px;
             flex-shrink: 0;
             margin-right: 8px;
+            text-shadow: 0 1px 1px black;
         }
 
         > .energy-bar {
@@ -389,6 +398,7 @@ body {
     > .stage {
         font-size: 24px;
         margin-bottom: 16px;
+        text-shadow: 0 1px 1px black;
     }
 
     > .title {
@@ -401,6 +411,7 @@ body {
         margin-top: 32px;
         margin-bottom: 80px;
         font-size: 16px;
+        text-shadow: 0 1px 1px black;
     }
 
     > button + button {
